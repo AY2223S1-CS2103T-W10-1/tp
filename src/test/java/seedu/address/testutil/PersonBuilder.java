@@ -61,7 +61,7 @@ public class PersonBuilder {
         return this;
     }
 
-      /**
+    /**
      * Sets the {@code Remark} of the {@code Person} that we are building.
      */
     public PersonBuilder withRemark(String remark) {
@@ -102,6 +102,6 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, address, remark, tags);    }
+        return new Person(name, phone, email, address, remark, tags); }
 
 }
