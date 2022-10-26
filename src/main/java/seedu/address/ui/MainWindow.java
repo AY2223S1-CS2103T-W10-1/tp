@@ -1,7 +1,13 @@
 package seedu.address.ui;
 
+
+import java.util.Timer;
 import java.util.logging.Logger;
 
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,6 +30,9 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import javafx.scene.input.KeyCode;
 import javafx.scene.control.SkinBase;
 import com.sun.javafx.scene.control.behavior.TabPaneBehavior;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import javafx.animation.KeyFrame;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -105,6 +114,44 @@ public class MainWindow extends UiPart<Stage> {
 
 
     private void setAccelerator(TabPane tabPane) {
+
+
+        tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> ov, Number t, final Number t1) {
+                Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (tabPane.getTabs().size() > 0) {
+                            final Tab tab = (Tab) tabPane.getTabs().get(t1.intValue());
+
+                            final Timeline animation = new Timeline(
+                                    new KeyFrame(Duration.millis(25),
+                                    new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent actionEvent) {
+                                            Platform.runLater(new Runnable() {
+
+                                                @Override
+                                                public void run() {
+                                                    tab.getContent().requestFocus();
+                                                }
+                                            });
+                                        }
+                                    }));
+                            animation.setCycleCount(1);
+                            animation.play();
+                        }
+                    }
+                });
+
+            }
+        });
+
+
+
 
         tabPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
