@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-
-import java.util.Timer;
 import java.util.logging.Logger;
 
 import javafx.animation.Timeline;
@@ -11,12 +9,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.control.skin.TabPaneSkin;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
@@ -28,9 +24,7 @@ import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import javafx.scene.input.KeyCode;
-import javafx.scene.control.SkinBase;
 import com.sun.javafx.scene.control.behavior.TabPaneBehavior;
-import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 
@@ -128,7 +122,7 @@ public class MainWindow extends UiPart<Stage> {
                             final Tab tab = (Tab) tabPane.getTabs().get(t1.intValue());
 
                             final Timeline animation = new Timeline(
-                                    new KeyFrame(Duration.millis(25),
+                                    new KeyFrame(Duration.millis(1),
                                     new EventHandler<ActionEvent>() {
                                         @Override
                                         public void handle(ActionEvent actionEvent) {
@@ -151,12 +145,10 @@ public class MainWindow extends UiPart<Stage> {
         });
 
 
-
-
         tabPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent t) {
-                if (t.getCode().equals(KeyCode.TAB) ) {
+                if (t.getCode().equals(KeyCode.SHIFT) ) {
                     int size = tabPane.getTabs().size();
 
                     if (size > 0) {
