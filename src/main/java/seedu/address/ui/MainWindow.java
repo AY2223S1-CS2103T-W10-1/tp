@@ -3,11 +3,14 @@ package seedu.address.ui;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.control.skin.TabPaneSkin;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
@@ -18,6 +21,9 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import javafx.scene.input.KeyCode;
+import javafx.scene.control.SkinBase;
+import com.sun.javafx.scene.control.behavior.TabPaneBehavior;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -82,6 +88,10 @@ public class MainWindow extends UiPart<Stage> {
         setAccelerators();
 
         helpWindow = new HelpWindow();
+
+
+
+
     }
 
     public Stage getPrimaryStage() {
@@ -90,7 +100,47 @@ public class MainWindow extends UiPart<Stage> {
 
     private void setAccelerators() {
         setAccelerator(helpMenuItem, KeyCombination.valueOf("F1"));
+        setAccelerator(dataPanelsTabPanes);
     }
+
+
+    private void setAccelerator(TabPane tabPane) {
+
+        tabPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode().equals(KeyCode.TAB) ) {
+                    int size = tabPane.getTabs().size();
+
+                    if (size > 0) {
+                        // TabPaneSkin skin = (TabPaneSkin) tabPane.getSkin();
+                        TabPaneBehavior tabPaneBehavior = new TabPaneBehavior(tabPane);
+
+                        int selectedIndex = tabPane.getSelectionModel().getSelectedIndex();
+
+                        if (!t.isShiftDown()) {
+                            if (selectedIndex < size -1) {
+                                tabPaneBehavior.selectNextTab();
+                            } else {
+                                tabPaneBehavior.selectTab(tabPane.getTabs().get(0));
+                            }
+                        } else {
+                            if (selectedIndex > 0) {
+                                tabPaneBehavior.selectPreviousTab();
+                            } else {
+                                tabPaneBehavior.selectTab(tabPane.getTabs().get(size - 1));
+                            }
+                        }
+
+                        t.consume();
+                    }
+
+                }
+            }
+        });
+    }
+
+
 
     /**
      * Sets the accelerator of a MenuItem.
@@ -120,6 +170,9 @@ public class MainWindow extends UiPart<Stage> {
                 event.consume();
             }
         });
+
+
+
     }
 
     /**
