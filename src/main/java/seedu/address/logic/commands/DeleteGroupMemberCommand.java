@@ -72,11 +72,6 @@ public class DeleteGroupMemberCommand extends Command {
         }
         //change field
         ArrayList<PersonGroup> personGroupArrayList = personToGroup.getPersonGroups();
-        ArrayList<PersonGroup> personGroupArrayListCopy = new ArrayList<>(personGroupArrayList);
-        Person originalPersonBeforeEdit = new Person(
-            personToGroup.getName(), personToGroup.getPhone(), personToGroup.getEmail(),
-            personToGroup.getAddress(), personToGroup.getTags(), personToGroup.getAssignments(),
-            personGroupArrayListCopy);
 
         personGroupArrayList.remove(this.personGroup);
 
@@ -88,7 +83,8 @@ public class DeleteGroupMemberCommand extends Command {
 
         //deletes person from the group
         Set<Person> groupMembers = new HashSet<>(groupToDeletePerson.getMembers());
-        groupMembers.remove(originalPersonBeforeEdit);
+        //need to use the editedPerson instead
+        groupMembers.remove(editedPerson);
         Group editedGroup = new Group(groupToDeletePerson.getName(), groupMembers);
 
 
